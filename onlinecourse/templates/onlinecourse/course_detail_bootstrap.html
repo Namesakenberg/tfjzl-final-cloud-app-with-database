@@ -51,6 +51,50 @@
                 {% endfor %}
             </div>
             <!-- Course detail template changes go here -->
+            {% if user.is_authenticated %}
+    <div class="mt-3">
+
+        <!-- Start Exam Button -->
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#examSection">
+            Start Exam
+        </button>
+
+        <!-- Collapsible Exam Section -->
+        <div id="examSection" class="collapse mt-3">
+
+            <form method="post" action="#">
+                {% csrf_token %}
+
+                {% for question in course.question_set.all %}
+                    <div class="card mt-2">
+                        <div class="card-header">
+                            <strong>{{ question.question_text }}</strong> ({{ question.grade }} pts)
+                        </div>
+
+                        <div class="card-body">
+                            {% for choice in question.choice_set.all %}
+                                <div class="form-check">
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           name="choice"
+                                           value="{{ choice.id }}">
+                                    <label class="form-check-label">
+                                        {{ choice.choice_text }}
+                                    </label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <button type="submit" class="btn btn-success mt-3">
+                    Submit Exam
+                </button>
+            </form>
+
+        </div>
+    </div>
+{% endif %}
     </div>
 </body>
 </html>
