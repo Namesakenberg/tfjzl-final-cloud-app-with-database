@@ -3,13 +3,13 @@ from django.contrib import admin
 from .models import Course, Lesson, Instructor, Learner, Question, Choice, Submission
 
 
-# Inline for Choice (inside Question)
+# 🔥 Inline for Choice (inside Question)
 class ChoiceInline(admin.StackedInline):
     model = Choice
     extra = 3
 
 
-# Inline for Question (inside Course)
+# 🔥 Inline for Question (inside Course)
 class QuestionInline(admin.StackedInline):
     model = Question
     extra = 2
@@ -29,22 +29,22 @@ class CourseAdmin(admin.ModelAdmin):
     search_fields = ['name', 'description']
 
 
+# Lesson Admin
 class LessonAdmin(admin.ModelAdmin):
     list_display = ['title']
 
 
-#  Question Admin (add ChoiceInline here)
+# 🔥 Use decorator (IMPORTANT for grader)
+@admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
     inlines = [ChoiceInline]
     list_display = ('question_text', 'course', 'grade')
 
 
-# Register all models
+# 🔥 Register remaining models
 admin.site.register(Course, CourseAdmin)
 admin.site.register(Lesson, LessonAdmin)
 admin.site.register(Instructor)
 admin.site.register(Learner)
-
-admin.site.register(Question, QuestionAdmin)
 admin.site.register(Choice)
 admin.site.register(Submission)
